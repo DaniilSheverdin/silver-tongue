@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using SilverTongue.Data;
 
 namespace SilverTongue.Web
 {
@@ -28,6 +30,11 @@ namespace SilverTongue.Web
         {
 
             services.AddControllers();
+            services.AddDbContext<Data.DbContext>(opts=>
+            {
+                opts.EnableDetailedErrors();
+                opts.UseNpgsql(Configuration.GetConnectionString("stongue.dev"));
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SilverTongue.Web", Version = "v1" });
