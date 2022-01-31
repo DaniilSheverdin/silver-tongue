@@ -239,7 +239,7 @@ namespace SilverTongue.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SilverTongue.Data.UsersDitctionary", b =>
+            modelBuilder.Entity("SilverTongue.Data.Models.UsersDitctionary", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -321,7 +321,7 @@ namespace SilverTongue.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SilverTongue.Data.UsersDitctionary", b =>
+            modelBuilder.Entity("SilverTongue.Data.Models.UsersDitctionary", b =>
                 {
                     b.HasOne("SilverTongue.Data.Models.User", "User")
                         .WithMany()

@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SilverTongue.Data
+namespace SilverTongue.Data.Models
 {
     public class UsersDitctionary
     {

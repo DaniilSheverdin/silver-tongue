@@ -35,6 +35,8 @@ namespace SilverTongue.Web
                 opts.EnableDetailedErrors();
                 opts.UseNpgsql(Configuration.GetConnectionString("stongue.dev"));
             });
+            services.AddTransient<Services.Dictionary.IDictionaryService, Services.Dictionary.DictionaryService>();
+            services.AddTransient<Services.User.IUserService, Services.User.UserService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SilverTongue.Web", Version = "v1" });
