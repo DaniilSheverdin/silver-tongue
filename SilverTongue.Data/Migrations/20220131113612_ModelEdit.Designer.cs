@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SilverTongue.Data;
@@ -9,9 +10,10 @@ using SilverTongue.Data;
 namespace SilverTongue.Data.Migrations
 {
     [DbContext(typeof(DbContext))]
-    partial class DbContextModelSnapshot : ModelSnapshot
+    [Migration("20220131113612_ModelEdit")]
+    partial class ModelEdit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,40 +215,6 @@ namespace SilverTongue.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SilverTongue.Data.Models.SpellCheck", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("CreateOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("InputWord")
-                        .HasColumnType("character varying(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("OptionsSequence")
-                        .HasColumnType("character varying(300)")
-                        .HasMaxLength(300);
-
-                    b.Property<DateTime>("UpdateOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("isCorrect")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SpellChecks");
-                });
-
             modelBuilder.Entity("SilverTongue.Data.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -262,11 +230,8 @@ namespace SilverTongue.Data.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("Password")
-                        .HasColumnType("character varying(300)")
-                        .HasMaxLength(300);
-
-                    b.Property<int>("Points")
-                        .HasColumnType("integer");
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
 
                     b.Property<DateTime>("UpdateOn")
                         .HasColumnType("timestamp without time zone");
@@ -356,13 +321,6 @@ namespace SilverTongue.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SilverTongue.Data.Models.SpellCheck", b =>
-                {
-                    b.HasOne("SilverTongue.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("SilverTongue.Data.Models.UsersDitctionary", b =>

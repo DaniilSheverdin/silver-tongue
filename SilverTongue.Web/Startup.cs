@@ -37,6 +37,7 @@ namespace SilverTongue.Web
             });
             services.AddTransient<Services.Dictionary.IDictionaryService, Services.Dictionary.DictionaryService>();
             services.AddTransient<Services.User.IUserService, Services.User.UserService>();
+            services.AddTransient<Services.Checker.ISymSpellCheckerService, Services.Checker.SymSpellCheckerService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SilverTongue.Web", Version = "v1" });

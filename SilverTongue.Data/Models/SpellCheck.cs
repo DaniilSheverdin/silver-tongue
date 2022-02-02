@@ -1,18 +1,18 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SilverTongue.Data.Models
 {
-    public class UsersDitctionary
+    public class SpellCheck
     {
         public int Id { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime UpdateOn { get; set; }
-        [MaxLength(50)]
-        public string Word { get; set; }
-        [MaxLength(50)]
-        public string Translate { get; set; }
+        [MaxLength(100)]
+        public string InputWord { get; set; }
+        [MaxLength(300)]
+        public string OptionsSequence { get; set; }
+        public bool isCorrect { get; set; }
         public User User { get; set; }
     }
 }

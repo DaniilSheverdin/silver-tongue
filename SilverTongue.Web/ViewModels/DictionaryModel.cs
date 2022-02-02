@@ -1,18 +1,17 @@
-﻿
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace SilverTongue.Data.Models
+namespace SilverTongue.Web.ViewModels
 {
-    public class UsersDitctionary
+    public class DictionaryModel
     {
         public int Id { get; set; }
         public DateTime CreateOn { get; set; }
         public DateTime UpdateOn { get; set; }
-        [MaxLength(50)]
         public string Word { get; set; }
-        [MaxLength(50)]
         public string Translate { get; set; }
-        public User User { get; set; }
+        public UserModel User { get; set; }
     }
 }

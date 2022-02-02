@@ -13,7 +13,11 @@ namespace SilverTongue.Data.Models
 
         [MaxLength(50)]
         public string Name { get; set; }
-        [MaxLength(50)]
+        [MaxLength(300)]
         public string Password { get; set; }
+        /// <summary>
+        /// Количество очков для рейтинга
+        /// </summary>
+        public int Points { get; set; }
     }
 }
