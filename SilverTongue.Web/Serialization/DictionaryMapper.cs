@@ -1,8 +1,5 @@
 ﻿using SilverTongue.Web.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SilverTongue.Web.Serialization
 {
@@ -17,10 +14,6 @@ namespace SilverTongue.Web.Serialization
         {
             return new DictionaryModel
             {
-                Id = dict.Id,
-                CreateOn = dict.CreateOn,
-                UpdateOn = dict.UpdateOn,
-                User = UserMapper.SerializeUserModel(dict.User),
                 Word = dict.Word,
                 Translate = dict.Translate
             };
@@ -34,12 +27,10 @@ namespace SilverTongue.Web.Serialization
         {
             return new Data.Models.UsersDitctionary
             {
-                Id = dict.Id,
-                CreateOn = dict.CreateOn,
-                UpdateOn = dict.UpdateOn,
-                User = UserMapper.SerializeUserModel(dict.User),
-                Word = dict.Word,
-                Translate = dict.Translate
+                CreateOn = DateTime.UtcNow,
+                UpdateOn = DateTime.UtcNow,
+                Word = dict.Word.ToLower(),
+                Translate = dict.Translate.ToLower()
             };
         }
     }

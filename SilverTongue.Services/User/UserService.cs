@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using SilverTongue.Data;
+﻿using SilverTongue.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,70 +14,118 @@ namespace SilverTongue.Services.User
         {
             _db = dbContext;
         }
-        public ServiceResponse<Data.Models.User> AddUser(Data.Models.User note)
+
+
+        public Data.Models.Users.User Authenticate(string username, string password)
+        {
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                return null;
+
+            var user = _db.Users.SingleOrDefault(x => x.Name == username);
+
+            // check if username exists
+            if (user == null)
+                return null;
+
+            // check if password is correct
+            if (!VerifyPasswordHash(password, user.Password, user.Salt))
+                return null;
+
+            // authentication successful
+            return user;
+        }
+
+        private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+            if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
+            if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != storedHash[i]) return false;
+                }
+            }
+
+            return true;
+        }
+        public ServiceResponse<Data.Models.Users.User> Create(Data.Models.Users.User user, string password)
         {
             try
             {
-                // generate a 128-bit salt using a cryptographically strong random sequence of nonzero values
-                byte[] salt = new byte[128 / 8];
-                using (var rngCsp = new RNGCryptoServiceProvider())
-                {
-                    rngCsp.GetNonZeroBytes(salt);
-                }
+                // validation
+                if (string.IsNullOrWhiteSpace(password))
+                    throw new Exception("Password is required");
 
-                // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
-                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                    password: note.Password,
-                    salt: salt,
-                    prf: KeyDerivationPrf.HMACSHA256,
-                    iterationCount: 100000,
-                    numBytesRequested: 256 / 8));
-                note.Password = hashed;
-                note.Points = 0;
-                note.UpdateOn = DateTime.UtcNow;
-                note.CreateOn = DateTime.UtcNow;
-                _db.Users.Add(note);
+                if (_db.Users.Any(x => x.Name == user.Name))
+                    throw new Exception("Username \"" + user.Name + "\" is already taken");
+
+                byte[] passwordHash, passwordSalt;
+                CreatePasswordHash(password, out passwordHash, out passwordSalt);
+                user.CreateOn = DateTime.UtcNow;
+                user.UpdateOn = DateTime.UtcNow;
+                user.Password = passwordHash;
+                user.Salt = passwordSalt;
+
+                _db.Users.Add(user);
                 _db.SaveChanges();
 
-                return new ServiceResponse<Data.Models.User>
+                return new ServiceResponse<Data.Models.Users.User>
                 {
-                    Data = note,
+                    Data = user,
                     Time = DateTime.UtcNow,
-                    Message = "Saved new User",
+                    Message = "Success",
                     IsSucces = true
                 };
             }
             catch (Exception e)
             {
-                return new ServiceResponse<Data.Models.User>
+                return new ServiceResponse<Data.Models.Users.User>
                 {
-                    Data = note,
+                    Data = null,
                     Time = DateTime.UtcNow,
-                    Message = e.StackTrace,
+                    Message = e.Message,
                     IsSucces = false
                 };
             }
-        }
 
-        public ServiceResponse<Data.Models.User> DeleteNote(int id)
+        }
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
+        }
+        public ServiceResponse<Data.Models.Users.User> Delete(int id)
         {
             try
             {
-                var note = _db.Users.Find(id);
-                _db.Users.Remove(note);
-                _db.SaveChanges();
-                return new ServiceResponse<Data.Models.User>
+                var user = _db.Users.Find(id);
+                if (user != null)
                 {
-                    Data = note,
+                    _db.Users.Remove(user);
+                    _db.SaveChanges();
+                }
+                return new ServiceResponse<Data.Models.Users.User>
+                {
+                    Data = user,
                     Time = DateTime.UtcNow,
-                    Message = "Deleted note",
+                    Message = "Deleted user",
                     IsSucces = true
                 };
-
             }
             catch (Exception e)
             {
-                return new ServiceResponse<Data.Models.User>
+                return new ServiceResponse<Data.Models.Users.User>
                 {
                     Data = null,
                     Time = DateTime.UtcNow,
@@ -87,13 +134,11 @@ namespace SilverTongue.Services.User
                 };
             }
         }
-
-        public List<Data.Models.User> GetAllUser()
+        public IEnumerable<Data.Models.Users.User> GetAll()
         {
-            return _db.Users.OrderByDescending(user=>user.Points).ToList();
+            return _db.Users.OrderByDescending(user => user.Points);
         }
-
-        public Data.Models.User GetById(int id)
+        public Data.Models.Users.User GetById(int id)
         {
             return _db.Users.Find(id);
         }

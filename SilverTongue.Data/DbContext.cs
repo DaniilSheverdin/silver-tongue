@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SilverTongue.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SilverTongue.Data
 {
@@ -13,7 +10,7 @@ namespace SilverTongue.Data
         /// <summary>
         /// пользователи
         /// </summary>
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Models.Users.User> Users { get; set; }
         /// <summary>
         /// Пользовательские словари
         /// </summary>

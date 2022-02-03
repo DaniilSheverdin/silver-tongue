@@ -13,6 +13,6 @@ namespace SilverTongue.Data.Models
         public string Word { get; set; }
         [MaxLength(50)]
         public string Translate { get; set; }
-        public User User { get; set; }
+        public Users.User User { get; set; }
     }
 }

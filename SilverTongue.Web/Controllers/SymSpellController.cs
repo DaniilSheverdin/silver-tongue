@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SilverTongue.Web.ViewModels;
-using SilverTongue.Web.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SilverTongue.Web.Controllers
 {
+    [Authorize]
+    [ApiController]
+    [Route("[controller]")]
     public class SymSpellController : ControllerBase
     {
         private readonly ILogger<SymSpellController> _logger;
@@ -19,12 +17,12 @@ namespace SilverTongue.Web.Controllers
             _logger = logger;
             _SpellCheckerService = SpellCheckerService;
         }
-        [HttpPost("/api/spellcheck")]
-        public ActionResult AddUser([FromBody] SpellCheckModel model)
+        [HttpPost]
+        public ActionResult AddCheck([FromBody] string word)
         {
             _logger.LogInformation("Checking...");
-
-            var check = _SpellCheckerService.SpellCheck(SpellMapper.SerializeSpellModel(model));
+            var userId = int.Parse(User.Identity.Name);
+            var check = _SpellCheckerService.SpellCheck(word, userId);
             return Ok(check);
         }
     }

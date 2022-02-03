@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SilverTongue.Services.Checker
 {
@@ -13,7 +12,7 @@ namespace SilverTongue.Services.Checker
         {
             _db = dbContext;
         }
-        public ServiceResponse<Data.Models.SpellCheck> SpellCheck(SpellCheckModel model)
+        public ServiceResponse<Data.Models.SpellCheck> SpellCheck(string word, int id)
         {
             try
             {
@@ -21,8 +20,8 @@ namespace SilverTongue.Services.Checker
                 {
                     CreateOn = DateTime.Now,
                     UpdateOn = DateTime.Now,
-                    InputWord = model.word,
-                    User = _db.Users.Find(model.id),
+                    InputWord = word,
+                    User = _db.Users.Find(id),
                     isCorrect = false,
                     OptionsSequence = ""
                 };
@@ -36,8 +35,8 @@ namespace SilverTongue.Services.Checker
                 //wordfrequency_en.txt  ensures high correction quality by combining two data sources: 
                 //Google Books Ngram data  provides representative word frequencies (but contains many entries with spelling errors)  
                 //SCOWL — Spell Checker Oriented Word Lists which ensures genuine English vocabulary (but contained no word frequencies)   
-                string path = AppDomain.CurrentDomain.BaseDirectory + "frequency_dictionary_en_82_765.txt"; //path referencing the SymSpell core project
-                                                                                                            //string path = "../../frequency_dictionary_en_82_765.txt";  //path when using symspell nuget package (frequency_dictionary_en_82_765.txt is included in nuget package)
+                //string path = AppDomain.CurrentDomain.BaseDirectory + "frequency_dictionary_en_82_765.txt"; //path referencing the SymSpell core project
+                string path = "../../frequency_dictionary_en_82_765.txt";  //path when using symspell nuget package (frequency_dictionary_en_82_765.txt is included in nuget package)
                 if (!symSpell.LoadDictionary(path, 0, 1)) { Console.Error.WriteLine("\rFile not found: " + Path.GetFullPath(path)); Console.ReadKey(); }
 
                 //Alternatively Create the dictionary from a text corpus (e.g. http://norvig.com/big.txt ) 
@@ -50,7 +49,7 @@ namespace SilverTongue.Services.Checker
 
                 //check if input term or similar terms within edit-distance are in dictionary, return results sorted by ascending edit distance, then by descending word frequency     
                 const SymSpell.Verbosity verbosity = SymSpell.Verbosity.Closest;
-                suggestions = symSpell.Lookup(model.word, verbosity);
+                suggestions = symSpell.Lookup(word, verbosity);
 
 
                 //display term and frequency
@@ -60,10 +59,10 @@ namespace SilverTongue.Services.Checker
 
                     Console.WriteLine("правильное написание: " + suggestion.term + " расстояние редактирования = " + suggestion.distance.ToString());
                 }
-                note.isCorrect = suggestions[0].distance != 0 ? false:true;
+                note.isCorrect = suggestions[0].distance != 0 ? false : true;
                 _db.SpellChecks.Add(note);
                 if (note.isCorrect)
-                    _db.Users.Find(model.id).Points += 1;
+                    _db.Users.Find(id).Points += 1;
 
                 _db.SaveChanges();
                 return new ServiceResponse<SpellCheck>
@@ -74,7 +73,7 @@ namespace SilverTongue.Services.Checker
                     IsSucces = true
                 };
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new ServiceResponse<SpellCheck>
                 {

@@ -21,7 +21,6 @@
     "SilverTongue.Web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/dictionary",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

@@ -10,8 +10,8 @@ using SilverTongue.Data;
 namespace SilverTongue.Data.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20220202134214_SpellCheckDataModel")]
-    partial class SpellCheckDataModel
+    [Migration("20220203100140_ChangesForLogin")]
+    partial class ChangesForLogin
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -249,7 +249,7 @@ namespace SilverTongue.Data.Migrations
                     b.ToTable("SpellChecks");
                 });
 
-            modelBuilder.Entity("SilverTongue.Data.Models.User", b =>
+            modelBuilder.Entity("SilverTongue.Data.Models.Users.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -263,12 +263,14 @@ namespace SilverTongue.Data.Migrations
                         .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
-                    b.Property<string>("Password")
-                        .HasColumnType("character varying(300)")
-                        .HasMaxLength(300);
+                    b.Property<byte[]>("Password")
+                        .HasColumnType("bytea");
 
                     b.Property<int>("Points")
                         .HasColumnType("integer");
+
+                    b.Property<byte[]>("Salt")
+                        .HasColumnType("bytea");
 
                     b.Property<DateTime>("UpdateOn")
                         .HasColumnType("timestamp without time zone");
@@ -362,14 +364,14 @@ namespace SilverTongue.Data.Migrations
 
             modelBuilder.Entity("SilverTongue.Data.Models.SpellCheck", b =>
                 {
-                    b.HasOne("SilverTongue.Data.Models.User", "User")
+                    b.HasOne("SilverTongue.Data.Models.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("SilverTongue.Data.Models.UsersDitctionary", b =>
                 {
-                    b.HasOne("SilverTongue.Data.Models.User", "User")
+                    b.HasOne("SilverTongue.Data.Models.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });

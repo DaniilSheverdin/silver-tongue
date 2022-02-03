@@ -1,10 +1,10 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using System;
 
 namespace SilverTongue.Data.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class ChangesForLogin : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,19 +48,21 @@ namespace SilverTongue.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UsersDicts",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreateOn = table.Column<DateTime>(nullable: false),
                     UpdateOn = table.Column<DateTime>(nullable: false),
-                    English = table.Column<string>(maxLength: 50, nullable: true),
-                    Translate = table.Column<string>(maxLength: 50, nullable: true)
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    Password = table.Column<byte[]>(nullable: true),
+                    Salt = table.Column<byte[]>(nullable: true),
+                    Points = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsersDicts", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,24 +172,48 @@ namespace SilverTongue.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "SpellChecks",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreateOn = table.Column<DateTime>(nullable: false),
                     UpdateOn = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(maxLength: 50, nullable: true),
-                    Password = table.Column<string>(maxLength: 50, nullable: true),
-                    DictionaryId = table.Column<int>(nullable: true)
+                    InputWord = table.Column<string>(maxLength: 100, nullable: true),
+                    OptionsSequence = table.Column<string>(maxLength: 300, nullable: true),
+                    isCorrect = table.Column<bool>(nullable: false),
+                    UserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_SpellChecks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_UsersDicts_DictionaryId",
-                        column: x => x.DictionaryId,
-                        principalTable: "UsersDicts",
+                        name: "FK_SpellChecks_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsersDicts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreateOn = table.Column<DateTime>(nullable: false),
+                    UpdateOn = table.Column<DateTime>(nullable: false),
+                    Word = table.Column<string>(maxLength: 50, nullable: true),
+                    Translate = table.Column<string>(maxLength: 50, nullable: true),
+                    UserId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersDicts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UsersDicts_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -230,9 +256,14 @@ namespace SilverTongue.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_DictionaryId",
-                table: "Users",
-                column: "DictionaryId");
+                name: "IX_SpellChecks_UserId",
+                table: "SpellChecks",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersDicts_UserId",
+                table: "UsersDicts",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -253,7 +284,10 @@ namespace SilverTongue.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "SpellChecks");
+
+            migrationBuilder.DropTable(
+                name: "UsersDicts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -262,7 +296,7 @@ namespace SilverTongue.Data.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "UsersDicts");
+                name: "Users");
         }
     }
 }

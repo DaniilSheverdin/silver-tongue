@@ -1,45 +1,47 @@
 ﻿using SilverTongue.Web.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SilverTongue.Web.Serialization
 {
     public static class UserMapper
     {
         /// <summary>
-        /// Data model to view model
+        /// data to view
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="model">data model</param>
         /// <returns></returns>
-        public static UserModel SerializeUserModel(Data.Models.User user)
+        public static UserModel SerializeUserModel(Data.Models.Users.User model)
         {
             return new UserModel
             {
-                Id = user.Id,
-                CreateOn = user.CreateOn,
-                UpdateOn = user.UpdateOn,
-                Name = user.Name,
-                Password=user.Password,
-                Points=user.Points
+                Id = model.Id,
+                Name = model.Name,
+                Points = model.Points
             };
         }
         /// <summary>
-        /// view model to data model
+        /// view model (user) to data model
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="dict"></param>
         /// <returns></returns>
-        public static Data.Models.User SerializeUserModel(UserModel user)
+        public static Data.Models.Users.User SerializeUserModel(UserModel model)
         {
-            return new Data.Models.User
+            return new Data.Models.Users.User
             {
-                Id = user.Id,
-                CreateOn = user.CreateOn,
-                UpdateOn = user.UpdateOn,
-                Name = user.Name,
-                Password = user.Password,
-                Points=user.Points
+                Id = model.Id,
+                Name = model.Name,
+                Points = model.Points
+            };
+        }
+        /// <summary>
+        /// view model(registration) to data model
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        public static Data.Models.Users.User SerializeUserModel(RegisterModel model)
+        {
+            return new Data.Models.Users.User
+            {
+                Name = model.Name
             };
         }
     }

@@ -13,6 +13,6 @@ namespace SilverTongue.Data.Models
         [MaxLength(300)]
         public string OptionsSequence { get; set; }
         public bool isCorrect { get; set; }
-        public User User { get; set; }
+        public Users.User User { get; set; }
     }
 }

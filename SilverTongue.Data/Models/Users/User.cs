@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace SilverTongue.Data.Models
+namespace SilverTongue.Data.Models.Users
 {
     public class User
     {
@@ -13,8 +11,8 @@ namespace SilverTongue.Data.Models
 
         [MaxLength(50)]
         public string Name { get; set; }
-        [MaxLength(300)]
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
+        public byte[] Salt { get; set; }
         /// <summary>
         /// Количество очков для рейтинга
         /// </summary>

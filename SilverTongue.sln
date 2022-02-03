@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverTongue.Data", "SilverTongue.Data\SilverTongue.Data.csproj", "{612020CF-AB7F-4DFB-9F67-F2719498022E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilverTongue.Data", "SilverTongue.Data\SilverTongue.Data.csproj", "{612020CF-AB7F-4DFB-9F67-F2719498022E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverTongue.Services", "SilverTongue.Services\SilverTongue.Services.csproj", "{966D8442-875E-482A-8D10-0B449A986768}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilverTongue.Services", "SilverTongue.Services\SilverTongue.Services.csproj", "{966D8442-875E-482A-8D10-0B449A986768}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverTongue.Test", "SilverTongue.Test\SilverTongue.Test.csproj", "{26F95951-C086-4E33-BF29-75FA3EBB9229}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilverTongue.Test", "SilverTongue.Test\SilverTongue.Test.csproj", "{26F95951-C086-4E33-BF29-75FA3EBB9229}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverTongue.Web", "SilverTongue.Web\SilverTongue.Web.csproj", "{37E863DA-09BA-4E38-B15A-9A4783F02A3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilverTongue.Web", "SilverTongue.Web\SilverTongue.Web.csproj", "{37E863DA-09BA-4E38-B15A-9A4783F02A3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,9 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{612020CF-AB7F-4DFB-9F67-F2719498022E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -72,5 +69,11 @@ Global
 		{37E863DA-09BA-4E38-B15A-9A4783F02A3E}.Release|x64.Build.0 = Release|Any CPU
 		{37E863DA-09BA-4E38-B15A-9A4783F02A3E}.Release|x86.ActiveCfg = Release|Any CPU
 		{37E863DA-09BA-4E38-B15A-9A4783F02A3E}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A3F190FE-38C4-48C4-847B-B0C0B792F65D}
 	EndGlobalSection
 EndGlobal
