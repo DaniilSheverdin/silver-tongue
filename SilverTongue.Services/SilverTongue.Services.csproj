@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="SymSpell" Version="6.7.1" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,8 +10,8 @@ using SilverTongue.Data;
 namespace SilverTongue.Data.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20220203100140_ChangesForLogin")]
-    partial class ChangesForLogin
+    [Migration("20220322125558_NewCheckEntityMigration")]
+    partial class NewCheckEntityMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -215,7 +215,7 @@ namespace SilverTongue.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SilverTongue.Data.Models.SpellCheck", b =>
+            modelBuilder.Entity("SilverTongue.Data.Models.Check", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -225,26 +225,51 @@ namespace SilverTongue.Data.Migrations
                     b.Property<DateTime>("CreateOn")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("InputWord")
-                        .HasColumnType("character varying(100)")
-                        .HasMaxLength(100);
+                    b.Property<string>("Phrase")
+                        .HasColumnType("character varying(1000)")
+                        .HasMaxLength(1000);
 
-                    b.Property<string>("OptionsSequence")
-                        .HasColumnType("character varying(300)")
-                        .HasMaxLength(300);
-
-                    b.Property<DateTime>("UpdateOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("isCorrect")
+                    b.Property<bool>("isGrammCorrect")
                         .HasColumnType("boolean");
+
+                    b.Property<bool>("isSpellCorrect")
+                        .HasColumnType("boolean")
+                        .HasMaxLength(500);
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
+
+                    b.ToTable("Checks");
+                });
+
+            modelBuilder.Entity("SilverTongue.Data.Models.SpellCheck", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("CheckId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreateOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("OptionsSequence")
+                        .HasColumnType("character varying(500)")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("Word")
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CheckId");
 
                     b.ToTable("SpellChecks");
                 });
@@ -362,11 +387,20 @@ namespace SilverTongue.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SilverTongue.Data.Models.SpellCheck", b =>
+            modelBuilder.Entity("SilverTongue.Data.Models.Check", b =>
                 {
                     b.HasOne("SilverTongue.Data.Models.Users.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SilverTongue.Data.Models.SpellCheck", b =>
+                {
+                    b.HasOne("SilverTongue.Data.Models.Check", "Check")
+                        .WithMany()
+                        .HasForeignKey("CheckId");
                 });
 
             modelBuilder.Entity("SilverTongue.Data.Models.UsersDitctionary", b =>

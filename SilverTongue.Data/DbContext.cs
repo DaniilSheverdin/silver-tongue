@@ -19,5 +19,9 @@ namespace SilverTongue.Data
         /// Проверки орфографии
         /// </summary>
         public virtual DbSet<SpellCheck> SpellChecks { get; set; }
+        /// <summary>
+        /// Проверки
+        /// </summary>
+        public virtual DbSet<Check> Checks { get; set; }
     }
 }

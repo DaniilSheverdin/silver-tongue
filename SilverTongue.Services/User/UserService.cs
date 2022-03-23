@@ -134,9 +134,9 @@ namespace SilverTongue.Services.User
                 };
             }
         }
-        public IEnumerable<Data.Models.Users.User> GetAll()
+        public List<Data.Models.Users.User> GetAll()
         {
-            return _db.Users.OrderByDescending(user => user.Points);
+            return _db.Users.OrderByDescending(user => user.Points).ToList();
         }
         public Data.Models.Users.User GetById(int id)
         {

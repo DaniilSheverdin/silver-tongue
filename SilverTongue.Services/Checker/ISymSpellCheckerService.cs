@@ -1,4 +1,4 @@
-﻿namespace SilverTongue.Services.Checker
+﻿/*namespace SilverTongue.Services.Checker
 {
     public interface ISymSpellCheckerService
     {
@@ -10,3 +10,4 @@
         ServiceResponse<Data.Models.SpellCheck> SpellCheck(string word, int id);
     }
 }
+*/

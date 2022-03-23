@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using System;
 
 namespace SilverTongue.Data.Migrations
 {
-    public partial class ChangesForLogin : Migration
+    public partial class NewCheckEntityMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -172,27 +172,26 @@ namespace SilverTongue.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SpellChecks",
+                name: "Checks",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(nullable: false),
                     CreateOn = table.Column<DateTime>(nullable: false),
-                    UpdateOn = table.Column<DateTime>(nullable: false),
-                    InputWord = table.Column<string>(maxLength: 100, nullable: true),
-                    OptionsSequence = table.Column<string>(maxLength: 300, nullable: true),
-                    isCorrect = table.Column<bool>(nullable: false),
-                    UserId = table.Column<int>(nullable: true)
+                    Phrase = table.Column<string>(maxLength: 1000, nullable: true),
+                    isSpellCorrect = table.Column<bool>(maxLength: 500, nullable: false),
+                    isGrammCorrect = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SpellChecks", x => x.Id);
+                    table.PrimaryKey("PK_Checks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SpellChecks_Users_UserId",
+                        name: "FK_Checks_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -214,6 +213,28 @@ namespace SilverTongue.Data.Migrations
                         name: "FK_UsersDicts_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SpellChecks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CheckId = table.Column<int>(nullable: true),
+                    CreateOn = table.Column<DateTime>(nullable: false),
+                    Word = table.Column<string>(maxLength: 100, nullable: true),
+                    OptionsSequence = table.Column<string>(maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SpellChecks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SpellChecks_Checks_CheckId",
+                        column: x => x.CheckId,
+                        principalTable: "Checks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -256,9 +277,14 @@ namespace SilverTongue.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_SpellChecks_UserId",
-                table: "SpellChecks",
+                name: "IX_Checks_UserId",
+                table: "Checks",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SpellChecks_CheckId",
+                table: "SpellChecks",
+                column: "CheckId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UsersDicts_UserId",
@@ -294,6 +320,9 @@ namespace SilverTongue.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Checks");
 
             migrationBuilder.DropTable(
                 name: "Users");

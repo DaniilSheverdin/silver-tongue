@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿/*using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -7,12 +7,12 @@ namespace SilverTongue.Web.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class SymSpellController : ControllerBase
+    public class SSConroller : ControllerBase
     {
-        private readonly ILogger<SymSpellController> _logger;
+        private readonly ILogger<SSConroller> _logger;
         private readonly Services.Checker.ISymSpellCheckerService _SpellCheckerService;
 
-        public SymSpellController(ILogger<SymSpellController> logger, Services.Checker.ISymSpellCheckerService SpellCheckerService)
+        public SSConroller(ILogger<SSConroller> logger, Services.Checker.ISymSpellCheckerService SpellCheckerService)
         {
             _logger = logger;
             _SpellCheckerService = SpellCheckerService;
@@ -27,3 +27,4 @@ namespace SilverTongue.Web.Controllers
         }
     }
 }
+*/

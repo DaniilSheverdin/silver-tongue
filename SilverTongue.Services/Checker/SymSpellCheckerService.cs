@@ -1,4 +1,4 @@
-﻿using SilverTongue.Data.Models;
+﻿/*using SilverTongue.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,9 +35,12 @@ namespace SilverTongue.Services.Checker
                 //wordfrequency_en.txt  ensures high correction quality by combining two data sources: 
                 //Google Books Ngram data  provides representative word frequencies (but contains many entries with spelling errors)  
                 //SCOWL — Spell Checker Oriented Word Lists which ensures genuine English vocabulary (but contained no word frequencies)   
-                //string path = AppDomain.CurrentDomain.BaseDirectory + "frequency_dictionary_en_82_765.txt"; //path referencing the SymSpell core project
-                string path = "../../frequency_dictionary_en_82_765.txt";  //path when using symspell nuget package (frequency_dictionary_en_82_765.txt is included in nuget package)
-                if (!symSpell.LoadDictionary(path, 0, 1)) { Console.Error.WriteLine("\rFile not found: " + Path.GetFullPath(path)); Console.ReadKey(); }
+                string path = AppDomain.CurrentDomain.BaseDirectory + "frequency_dictionary_en_82_765.txt"; //path referencing the SymSpell core project
+                //string path = "../../frequency_dictionary_en_82_765.txt";  //path when using symspell nuget package (frequency_dictionary_en_82_765.txt is included in nuget package)
+                if (!symSpell.LoadDictionary(path, 0, 1)) 
+                { 
+                    Console.Error.WriteLine("\rFile not found: " + Path.GetFullPath(path)); Console.ReadKey(); 
+                }
 
                 //Alternatively Create the dictionary from a text corpus (e.g. http://norvig.com/big.txt ) 
                 //Make sure the corpus does not contain spelling errors, invalid terms and the word frequency is representative to increase the precision of the spelling correction.
@@ -59,7 +62,7 @@ namespace SilverTongue.Services.Checker
 
                     Console.WriteLine("правильное написание: " + suggestion.term + " расстояние редактирования = " + suggestion.distance.ToString());
                 }
-                note.isCorrect = suggestions[0].distance != 0 ? false : true;
+                note.isCorrect = suggestions[0].distance == 0;
                 _db.SpellChecks.Add(note);
                 if (note.isCorrect)
                     _db.Users.Find(id).Points += 1;
@@ -86,3 +89,4 @@ namespace SilverTongue.Services.Checker
         }
     }
 }
+*/
