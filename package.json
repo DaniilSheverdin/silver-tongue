@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "eslint-auto-fix": "^1.0.4"
+  }
+}
