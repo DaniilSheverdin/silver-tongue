@@ -1,15 +1,35 @@
 <template>
 	<div class="side-menu-container">
 		<router-link to="/"><img id="imgLogo" alt="Vue logo" src="../assets/logo.png"></router-link> 
+		<stongue-button :link="'tests'" is-full-width>
+			Тесты
+		</stongue-button>
+		<stongue-button :link="'tests'" is-full-width>
+			Мой словарь
+		</stongue-button>
+		<stongue-button :link="'tests'" is-full-width>
+			Орфография
+		</stongue-button>
+		<stongue-button :link="'tests'" is-full-width>
+			Грамматика
+		</stongue-button>
+		<stongue-button :link="'tests'" is-full-width>
+			Материалы
+		</stongue-button>
+		<router-link to="/tests">
+			<img id="exitBtn" alt="Exit" src="../assets/exit.svg">
+		</router-link>
+		
 	</div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import StongueButton from './StongueButton.vue';
 
 @Component({
 	name: 'SideMenu',
-	components:{}
+	components:{ StongueButton}
 })
 
 export default class SideMenu extends Vue{}
@@ -23,10 +43,18 @@ export default class SideMenu extends Vue{}
 		width: $menu-width;
 		display: flex;
 		flex-direction: column;
-		padding: 0.8 rem;
 		box-sizing: border-box;
+		padding: 0.6vw;
+		justify-content: space-between;
 	}
 	#imgLogo{
-		width: $menu-width;
+		width: 10vw;
+		padding-top: 1.8vh;
+		padding-bottom: 1.8vh;
+	}
+	#exitBtn{
+		width: 50%;
+		align-items: flex-start;
+  	flex: 1 0 auto;
 	}
 </style>

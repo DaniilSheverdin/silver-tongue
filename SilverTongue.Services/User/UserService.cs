@@ -60,6 +60,10 @@ namespace SilverTongue.Services.User
                 // validation
                 if (string.IsNullOrWhiteSpace(password))
                     throw new Exception("Password is required");
+                if (password.Length >= 30)
+                    throw new Exception("Password is too long");
+                if (user.Name.Length >= 30)
+                    throw new Exception("Login is too long");
 
                 if (_db.Users.Any(x => x.Name == user.Name))
                     throw new Exception("Username \"" + user.Name + "\" is already taken");

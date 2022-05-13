@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SilverTongue.Services.Checker
 {
@@ -12,6 +11,6 @@ namespace SilverTongue.Services.Checker
         /// <param name="word"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        ServiceResponse<Tuple<Data.Models.Check,List<Data.Models.SpellCheck>>> Check(string word, int id);
+        ServiceResponse<Tuple<Data.Models.Check, List<Data.Models.SpellCheck>>> Check(string word, int id);
     }
 }

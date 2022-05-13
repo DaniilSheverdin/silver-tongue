@@ -3,9 +3,9 @@
     <div class="app-menu">
       <side-menu/>
     </div>
-    <app-content>
-    <router-view/>
-    </app-content>
+    <div class="app-content">
+      <router-view/>
+    </div>
   </div>
 </template>
 
@@ -21,3 +21,32 @@ import { Component, Vue } from 'vue-property-decorator'
 })
 export default class App extends Vue{}
 </script>
+
+<style lang='scss'>
+  @import "@/scss/global.scss";
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;700&display=swap');
+
+#app{
+  display: flex;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  font-size: 2.5vh;
+
+  .app-menu{
+    position: fixed;
+  }
+  .app-content{
+    padding: 3.1vh;
+    width: 90%;
+    margin: 3.5vh auto 3.5vh $menu-width;
+    text-align: left;
+
+  }
+}
+*{
+  margin: 0;
+}
+a{
+  text-decoration: none;
+}
+</style>

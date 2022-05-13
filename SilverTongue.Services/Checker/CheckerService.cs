@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SilverTongue.Data.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SilverTongue.Services.Checker
@@ -38,7 +36,7 @@ namespace SilverTongue.Services.Checker
             Console.WriteLine("SymSpellInterface was initialized. You are ready to go!");
         }
 
-       
+
         public ServiceResponse<Tuple<Check, List<SpellCheck>>> Check(string word, int id)
         {
             using (var scope = scopeFactory.CreateScope())
@@ -76,7 +74,8 @@ namespace SilverTongue.Services.Checker
 
                             Console.WriteLine("правильное написание: " + suggestion.term + " расстояние редактирования = " + suggestion.distance.ToString());
                         }
-                        if (suggestions[0].distance != 0){
+                        if (suggestions[0].distance != 0)
+                        {
                             checkNote.isSpellCorrect = false;
                         }
                         else

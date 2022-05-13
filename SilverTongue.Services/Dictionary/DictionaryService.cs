@@ -98,6 +98,5 @@ namespace SilverTongue.Services.Dictionary
             return _db.UsersDicts.Where(uds => uds.User.Id == id).ToList();
         }
 
-
     }
 }

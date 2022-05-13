@@ -36,8 +36,8 @@ namespace SilverTongue.Web
                 opts.UseNpgsql(Configuration.GetConnectionString("stongue.dev"));
             });
             services.AddTransient<Services.Dictionary.IDictionaryService, Services.Dictionary.DictionaryService>();
-             // services.AddTransient<Services.User.IUserService, Services.User.UserService>();
-         //   services.AddTransient<Services.Checker.ISymSpellCheckerService, Services.Checker.SymSpellCheckerService>();
+            // services.AddTransient<Services.User.IUserService, Services.User.UserService>();
+            //   services.AddTransient<Services.Checker.ISymSpellCheckerService, Services.Checker.SymSpellCheckerService>();
             // services.AddTransient<Services.User.IUserService, Services.User.UserService>();
             services.AddSingleton<Services.Checker.ICheckerService, Services.Checker.CheckerService>();
             services.AddSwaggerGen(c =>
