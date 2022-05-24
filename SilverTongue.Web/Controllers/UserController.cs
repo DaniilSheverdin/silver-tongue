@@ -85,6 +85,8 @@ namespace SilverTongue.Web.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+        //later need to comment 
+        [AllowAnonymous]
         [HttpGet("rating")]
         public IActionResult GetAll()
         {

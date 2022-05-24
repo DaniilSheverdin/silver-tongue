@@ -11,6 +11,6 @@ namespace SilverTongue.Services.Checker
         /// <param name="word"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        ServiceResponse<Tuple<Data.Models.Check, List<Data.Models.SpellCheck>>> Check(string word, int id);
+        ServiceResponse<List<Data.Models.SpellCheck>> Check(string word, int id);
     }
 }

@@ -14,8 +14,6 @@ namespace SilverTongue.Services.User
         {
             _db = dbContext;
         }
-
-
         public Data.Models.Users.User Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))

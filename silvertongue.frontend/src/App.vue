@@ -38,7 +38,7 @@ export default class App extends Vue{}
   .app-content{
     padding: 3.1vh;
     width: 90%;
-    margin: 3.5vh auto 3.5vh $menu-width;
+    margin: 1vh auto 3.5vh $menu-width;
     text-align: left;
 
   }
@@ -48,5 +48,9 @@ export default class App extends Vue{}
 }
 a{
   text-decoration: none;
+}
+
+hr{
+  margin-bottom: 1.5vh;
 }
 </style>

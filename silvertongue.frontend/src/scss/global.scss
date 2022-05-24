@@ -3,4 +3,24 @@ $img-padding-bt: 1.5vh;
 
 body{
 	margin: auto;
+	padding: 0;
+}
+
+.table{
+	width:50%;
+	max-width: 50%;
+	margin-bottom: 2rem;
+	border-collapse: collapse;
+
+	tr{
+		padding-left: 2vw;
+		padding-right: 2vw;
+		display: flex;
+		justify-content: space-between;
+		border-top:1px solid;
+		border-bottom: 1px solid;
+		border-color: lighten($color: #000000, $amount: 80)
+		
+
+	}
 }

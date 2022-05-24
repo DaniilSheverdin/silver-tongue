@@ -37,7 +37,7 @@ namespace SilverTongue.Services.Checker
         }
 
 
-        public ServiceResponse<Tuple<Check, List<SpellCheck>>> Check(string word, int id)
+        public ServiceResponse<List<SpellCheck>> Check(string word, int id)
         {
             using (var scope = scopeFactory.CreateScope())
             {
@@ -77,17 +77,20 @@ namespace SilverTongue.Services.Checker
                         if (suggestions[0].distance != 0)
                         {
                             checkNote.isSpellCorrect = false;
+
+                            notesForReq.Add(spellCheckNote);
+                            db.SpellChecks.Add(spellCheckNote);
                         }
                         else
                             db.Users.Find(id).Points += 1;
-                        notesForReq.Add(spellCheckNote);
-                        db.SpellChecks.Add(spellCheckNote);
+                        
+                        
                     }
                     db.SaveChanges();
 
-                    return new ServiceResponse<Tuple<Check, List<SpellCheck>>>
+                    return new ServiceResponse<List<SpellCheck>>
                     {
-                        Data = new Tuple<Check, List<SpellCheck>>(checkNote, notesForReq),
+                        Data = notesForReq,
                         Time = DateTime.Now,
                         Message = "Saved new check",
                         IsSucces = true
@@ -95,7 +98,7 @@ namespace SilverTongue.Services.Checker
                 }
                 catch (Exception e)
                 {
-                    return new ServiceResponse<Tuple<Check, List<SpellCheck>>>
+                    return new ServiceResponse<List<SpellCheck>>
                     {
                         Data = null,
                         Time = DateTime.Now,

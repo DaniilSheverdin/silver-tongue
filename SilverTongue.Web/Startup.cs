@@ -27,7 +27,7 @@ namespace SilverTongue.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors();
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddDbContext<Data.DbContext>(opts =>
@@ -101,18 +101,23 @@ namespace SilverTongue.Web
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
+
             app.UseRouting();
+            // global cors policy
+            app.UseCors(
+                x => x
+                    .WithOrigins("http://localhost:8080")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                );
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            // global cors policy
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            
         }
     }
 }
