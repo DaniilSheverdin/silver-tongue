@@ -1,10 +1,10 @@
 <template>
 	<div class="home-container">
-		<h1>Привет, UserName!</h1>
+		<h1>Привет, {{ currentUser.name }}!</h1>
 		<hr/>
 		<div id='rating-container'>
 			<div id='userRating'>
-				<p>Твое место в рейтинге</p>
+				<p>Твое место в рейтинге: {{rating.indexOf(lvl)+1}}</p>
 			</div>
 			<div id='ratingTable'><h2>Рейтинг пользователей</h2>
 				<table class='table' v-if='getSize()>=10'>
@@ -30,6 +30,8 @@
 	import { IRating } from '@/types/UserRating';
 	import {Component, Vue} from 'vue-property-decorator'
 	import { RatingService } from '@/services/rating-serivce'
+	import { namespace } from "vuex-class";
+	const Auth = namespace("Auth");
 
 	const ratingService=new RatingService();
 	@Component(
@@ -42,20 +44,35 @@
 
 	export default class Home extends Vue{
 		rating: IRating[]=[
-			{id:1, points:33, name: "Здесь"},
-			{id:2, points:22, name: "Должен"},
-			{id:3, points:33, name: "Быть"},
-			{id:4, points:33, name: "Ответ"},
-			{id:5, points:33, name: "БЫКэнда"}
+			{points:33, name: "Здесь"},
+			{points:22, name: "Должен"},
+			{points:33, name: "Быть"},
+			{points:33, name: "Ответ"},
+			{points:33, name: "БЫКэнда"}
 		];
+		lvl:IRating={points:33, name: "Здесь"}
 		async initialize(){
 			this.rating=await ratingService.getRating();
+			await this.getLvl()
 		}
 		async created(){
 			await this.initialize();
 		}
 		getSize(){
 				return this.rating? this.rating.length:0;
+		}
+		// ✅ Find first object whose value matches condition\
+		async getLvl(){
+			const lvl_=this.rating.find(obj => obj!.name===this.currentUser.name);
+			this.lvl=lvl_?lvl_:this.lvl;
+		}
+		
+		@Auth.State("user")
+		currentUser!: any;
+		mounted() {
+			if (!this.currentUser) {
+				this.$router.push("/login");
+			}
 		}
 	}
 </script>

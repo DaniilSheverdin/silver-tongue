@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="app-menu">
+    <div class="app-menu" v-if="visible">
       <side-menu/>
     </div>
     <div class="app-content">
@@ -19,7 +19,16 @@ import { Component, Vue } from 'vue-property-decorator'
   name: 'App',
   components: {SideMenu}
 })
-export default class App extends Vue{}
+export default class App extends Vue{
+  visible=true;
+  async updated(){
+		this.visible=!(this.$router.currentRoute.name==='login');
+	}
+  async created(){
+		this.visible=!(this.$router.currentRoute.name==='login');
+	}
+
+}
 </script>
 
 <style lang='scss'>

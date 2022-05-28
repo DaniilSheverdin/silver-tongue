@@ -16,9 +16,9 @@
 		<stongue-button :link="'tests'" is-full-width>
 			Материалы
 		</stongue-button>
-		<router-link to="/tests">
+		<a href @click.prevent="logOut">
 			<img id="exitBtn" alt="Exit" src="../assets/exit.svg">
-		</router-link>
+		</a>
 		
 	</div>
 </template>
@@ -26,13 +26,25 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import StongueButton from './StongueButton.vue';
+import { namespace } from "vuex-class";
 
+const Auth = namespace("Auth");
 @Component({
 	name: 'SideMenu',
 	components:{ StongueButton}
 })
 
-export default class SideMenu extends Vue{}
+export default class SideMenu extends Vue{
+	@Auth.State("user")
+  private currentUser!: any;
+  @Auth.Action
+  private signOut!: () => void;
+
+	 logOut() {
+    this.signOut();
+    this.$router.push("/login");
+  }
+}
 </script>
 
 <style scoped lang="scss">

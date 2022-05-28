@@ -1,7 +1,12 @@
-﻿using SilverTongue.Data;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using SilverTongue.Data;
+using SilverTongue.Data.Users;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -10,9 +15,11 @@ namespace SilverTongue.Services.User
     public class UserService : IUserService
     {
         private readonly DbContext _db;
-        public UserService(DbContext dbContext)
+        private readonly AppSettings _appSettings;
+        public UserService(DbContext dbContext, IOptions<AppSettings> appSettings)
         {
             _db = dbContext;
+            _appSettings = appSettings.Value;
         }
         public Data.Models.Users.User Authenticate(string username, string password)
         {
@@ -20,16 +27,16 @@ namespace SilverTongue.Services.User
                 return null;
 
             var user = _db.Users.SingleOrDefault(x => x.Name == username);
-
-            // check if username exists
             if (user == null)
+                return null;
+            // check if username exists
+            if (user.Name == null)
                 return null;
 
             // check if password is correct
             if (!VerifyPasswordHash(password, user.Password, user.Salt))
                 return null;
 
-            // authentication successful
             return user;
         }
 
@@ -57,14 +64,14 @@ namespace SilverTongue.Services.User
             {
                 // validation
                 if (string.IsNullOrWhiteSpace(password))
-                    throw new Exception("Password is required");
+                    throw new Exception("Введите пароль!");
                 if (password.Length >= 30)
-                    throw new Exception("Password is too long");
+                    throw new Exception("Длина пароля должна быть меньше 30 символов");
                 if (user.Name.Length >= 30)
-                    throw new Exception("Login is too long");
+                    throw new Exception("Длина логина должна быть меньше 30 символов");
 
                 if (_db.Users.Any(x => x.Name == user.Name))
-                    throw new Exception("Username \"" + user.Name + "\" is already taken");
+                    throw new Exception("Пользователь \"" + user.Name + "\" уже существует");
 
                 byte[] passwordHash, passwordSalt;
                 CreatePasswordHash(password, out passwordHash, out passwordSalt);

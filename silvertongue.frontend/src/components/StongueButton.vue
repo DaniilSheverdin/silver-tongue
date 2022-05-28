@@ -27,8 +27,9 @@
 		isFullWidth?: boolean;
 
 		visitRoute(){
-			this.$router.push({ path: '/' })
-			this.$router.push({ name: this.link })
+			const path = `/${this.link}`
+			if (this.$route.path !== path) this.$router.push(path)
+
 		}
 	}
 </script>

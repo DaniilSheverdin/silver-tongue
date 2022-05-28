@@ -15,7 +15,6 @@ using System.Text;
 
 namespace SilverTongue.Web.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
@@ -33,15 +32,13 @@ namespace SilverTongue.Web.Controllers
             _mapper = mapper;
             _appSettings = appSettings.Value;
         }
-
-        [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] AuthenticateModel model)
+        public IActionResult Authenticate(AuthenticateRequest model)
         {
-            var user = _userService.Authenticate(model.Name, model.Password);
+            var user = _userService.Authenticate(model.Username, model.Password);
 
             if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest(new { message = "Пользователя с таким логином и паролем не существует" });
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -66,9 +63,8 @@ namespace SilverTongue.Web.Controllers
             });
         }
 
-        [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterModel model)
+        public IActionResult Register(RegisterModel model)
         {
             // map model to entity
             var user = UserMapper.SerializeUserModel(model);
@@ -86,7 +82,6 @@ namespace SilverTongue.Web.Controllers
             }
         }
         //later need to comment 
-        [AllowAnonymous]
         [HttpGet("rating")]
         public IActionResult GetAll()
         {
@@ -95,6 +90,7 @@ namespace SilverTongue.Web.Controllers
             return Ok(model);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetById()
         {
@@ -103,7 +99,7 @@ namespace SilverTongue.Web.Controllers
             var model = _mapper.Map<UserModel>(user);
             return Ok(model);
         }
-
+        [Authorize]
         [HttpDelete("del")]
         public IActionResult Delete()
         {

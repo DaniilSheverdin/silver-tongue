@@ -2,10 +2,10 @@
 
 namespace SilverTongue.Web.ViewModels
 {
-    public class AuthenticateModel
+    public class AuthenticateRequest
     {
         [Required]
-        public string Name { get; set; }
+        public string Username { get; set; }
 
         [Required]
         public string Password { get; set; }

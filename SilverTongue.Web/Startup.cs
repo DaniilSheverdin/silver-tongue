@@ -106,7 +106,7 @@ namespace SilverTongue.Web
             // global cors policy
             app.UseCors(
                 x => x
-                    .WithOrigins("http://localhost:8080")
+                    .WithOrigins("http://localhost:8081")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials()
