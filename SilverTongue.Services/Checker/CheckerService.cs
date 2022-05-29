@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SilverTongue.Data;
 using SilverTongue.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -8,16 +9,16 @@ namespace SilverTongue.Services.Checker
 {
     public class CheckerService : ICheckerService
     {
-        private SymSpell symSpell;//объект для работы с симметричной проверкой орфографии
-        private readonly Data.DbContext _db;
-
+        private readonly SymSpell symSpell;//объект для работы с симметричной проверкой орфографии
+                                           //  private readonly Data.DbContext _db;
+        private readonly Microsoft.Office.Interop.Word.Application M_word;
         private readonly IServiceScopeFactory scopeFactory;
 
         public CheckerService(IServiceScopeFactory scopeFactory)
         {
             this.scopeFactory = scopeFactory;
 
-
+            M_word= new Microsoft.Office.Interop.Word.Application();
             int initialCapacity = 82765;
             int maxEditDistanceDictionary = 2; //максимальное расстояние редактирование (уровень ошибки)
             symSpell = new SymSpell(initialCapacity, maxEditDistanceDictionary);
@@ -37,20 +38,21 @@ namespace SilverTongue.Services.Checker
         }
 
 
-        public ServiceResponse<List<SpellCheck>> Check(string word, int id)
+        public ServiceResponse<Tuple<List<SpellCheck>, Check>> Check(string word, int id)
         {
             using (var scope = scopeFactory.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<Data.DbContext>();
                 try
                 {
+
                     var checkNote = new Data.Models.Check
                     {
                         CreateOn = DateTime.Now,
                         UserId = id,
                         isGrammCorrect = false,
-                        isSpellCorrect = false,
-                        Phrase = word
+                        isSpellCorrect = true,
+                        Phrase = word,
                     };
                     db.Checks.Add(checkNote);
                     var clearText = Regex.Replace(word, "[-.?!)(,:]", "");
@@ -64,7 +66,7 @@ namespace SilverTongue.Services.Checker
                             CreateOn = DateTime.Now,
                             Word = sT,
                             Check = checkNote,
-                            OptionsSequence = ""
+                            OptionsSequence = "",
                         };
 
                         suggestions = symSpell.Lookup(sT, (SymSpell.Verbosity)2, 1);
@@ -86,11 +88,12 @@ namespace SilverTongue.Services.Checker
                         
                         
                     }
+                    checkNote.isGrammCorrect = M_word.CheckGrammar(word);
                     db.SaveChanges();
 
-                    return new ServiceResponse<List<SpellCheck>>
+                    return new ServiceResponse<Tuple<List<SpellCheck>, Check>>
                     {
-                        Data = notesForReq,
+                        Data = new Tuple <List<SpellCheck>, Check>(notesForReq,checkNote),
                         Time = DateTime.Now,
                         Message = "Saved new check",
                         IsSucces = true
@@ -98,7 +101,7 @@ namespace SilverTongue.Services.Checker
                 }
                 catch (Exception e)
                 {
-                    return new ServiceResponse<List<SpellCheck>>
+                    return new ServiceResponse<Tuple<List<SpellCheck>, Check>>
                     {
                         Data = null,
                         Time = DateTime.Now,

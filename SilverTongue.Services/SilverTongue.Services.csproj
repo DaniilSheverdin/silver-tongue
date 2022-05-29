@@ -14,4 +14,11 @@
     <ProjectReference Include="..\SilverTongue.Data\SilverTongue.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Interop.Microsoft.Office.Interop.Word">
+      <HintPath>bin\Debug\netcoreapp3.1\Interop.Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+
 </Project>

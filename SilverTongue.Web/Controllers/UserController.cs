@@ -19,7 +19,7 @@ namespace SilverTongue.Web.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
         private IMapper _mapper;
         private readonly AppSettings _appSettings;
 
@@ -82,6 +82,7 @@ namespace SilverTongue.Web.Controllers
             }
         }
         //later need to comment 
+        [Authorize]
         [HttpGet("rating")]
         public IActionResult GetAll()
         {

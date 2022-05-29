@@ -73,8 +73,7 @@ namespace SilverTongue.Services.User
                 if (_db.Users.Any(x => x.Name == user.Name))
                     throw new Exception("Пользователь \"" + user.Name + "\" уже существует");
 
-                byte[] passwordHash, passwordSalt;
-                CreatePasswordHash(password, out passwordHash, out passwordSalt);
+                CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
                 user.CreateOn = DateTime.UtcNow;
                 user.UpdateOn = DateTime.UtcNow;
                 user.Password = passwordHash;

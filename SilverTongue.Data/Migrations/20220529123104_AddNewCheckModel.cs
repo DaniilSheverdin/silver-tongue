@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using System;
 
 namespace SilverTongue.Data.Migrations
 {
-    public partial class NewCheckEntityMigration : Migration
+    public partial class AddNewCheckModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -223,7 +223,7 @@ namespace SilverTongue.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CheckId = table.Column<int>(nullable: true),
+                    checkId = table.Column<int>(nullable: false),
                     CreateOn = table.Column<DateTime>(nullable: false),
                     Word = table.Column<string>(maxLength: 100, nullable: true),
                     OptionsSequence = table.Column<string>(maxLength: 500, nullable: true)
@@ -232,11 +232,11 @@ namespace SilverTongue.Data.Migrations
                 {
                     table.PrimaryKey("PK_SpellChecks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SpellChecks_Checks_CheckId",
-                        column: x => x.CheckId,
+                        name: "FK_SpellChecks_Checks_checkId",
+                        column: x => x.checkId,
                         principalTable: "Checks",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -282,9 +282,9 @@ namespace SilverTongue.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SpellChecks_CheckId",
+                name: "IX_SpellChecks_checkId",
                 table: "SpellChecks",
-                column: "CheckId");
+                column: "checkId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UsersDicts_UserId",

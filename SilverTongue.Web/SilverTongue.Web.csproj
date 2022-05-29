@@ -27,4 +27,11 @@
     <ProjectReference Include="..\SilverTongue.Services\SilverTongue.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Interop.Microsoft.Office.Interop.Word">
+      <HintPath>bin\Debug\net5.0\Interop.Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+
 </Project>

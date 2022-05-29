@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SilverTongue.Web.Serialization;
 
 namespace SilverTongue.Web.Controllers
 {
-    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class SSController : ControllerBase
@@ -17,6 +17,7 @@ namespace SilverTongue.Web.Controllers
             _logger = logger;
             _CheckerService = CheckerService;
         }
+        [Authorize]
         [HttpPost("check")]
         public ActionResult check([FromBody] string phrase)
         {
@@ -24,8 +25,7 @@ namespace SilverTongue.Web.Controllers
             var userId = int.Parse(User.Identity.Name);
             _logger.LogInformation("Checking...");
             var check = _CheckerService.Check(phrase, userId);
-
-            return Ok(check);
+            return Ok(CheckMapper.SerializeCheckModel(check.Data));
         }
     }
 }

@@ -251,9 +251,6 @@ namespace SilverTongue.Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("CheckId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("CreateOn")
                         .HasColumnType("timestamp without time zone");
 
@@ -265,9 +262,12 @@ namespace SilverTongue.Data.Migrations
                         .HasColumnType("character varying(100)")
                         .HasMaxLength(100);
 
+                    b.Property<int>("checkId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CheckId");
+                    b.HasIndex("checkId");
 
                     b.ToTable("SpellChecks");
                 });
@@ -398,7 +398,9 @@ namespace SilverTongue.Data.Migrations
                 {
                     b.HasOne("SilverTongue.Data.Models.Check", "Check")
                         .WithMany()
-                        .HasForeignKey("CheckId");
+                        .HasForeignKey("checkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SilverTongue.Data.Models.UsersDitctionary", b =>
