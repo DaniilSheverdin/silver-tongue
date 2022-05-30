@@ -4,18 +4,20 @@
 		<hr/>
 		<div id='rating-container'>
 			<div id='userRating'>
-				<p>Твое место в рейтинге: {{rating.indexOf(lvl)+1}}</p>
+				<p class='userInfo'>Твое место в рейтинге: {{rating.indexOf(lvl)+1}}</p>
+				<p class='userInfo'>Сумма очков: {{lvl.points}}</p>
+				<p id='about'>Используй обучающие материалы, тренируй орфографию и грамматику, запоминай новые слова в своем словаре, проверяй уровень знаний с помощью тестов и увеличивай свой рейтинг!</p>
 			</div>
 			<div id='ratingTable'><h2>Рейтинг пользователей</h2>
 				<table class='table' v-if='getSize()>=10'>
-					<tr v-for='index in 10' :key="index">
+					<tr v-for='index in 10' :key="index" :style="[lvl.name===rating[index-1].name?{'background-color':'#7fd764', 'color':'white'}:{}]">
 						<td>{{index.toString()+" место"}}</td>
 						<td>{{rating[index-1].name}}</td>
-						<td>{{rating[index-1].points}}</td>
+						<td >{{rating[index-1].points}}</td>
 					</tr>
 				</table>
 				<table id='ratingTable' class='table' v-else>
-					<tr v-for='index in getSize()' :key="index">
+					<tr v-for='index in getSize()' :key="index" :style="[lvl.name===rating[index-1].name?{'background-color':'#7fd764', 'color':'white'}:{}]">
 						<td>{{index.toString()+" место"}}</td>
 						<td>{{rating[index-1].name}}</td>
 						<td>{{rating[index-1].points}}</td>
@@ -79,22 +81,42 @@
 
 <style lang='scss'>
 	#rating-container {
-		position: fixed;
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
-		width: 100%;
+
+		width: 84%;
 		margin-bottom:2vh;
 		margin-top: 4.5vh;
 	}
 	#userRating{
-		
-		width:50%;
+		width: 50%;
+		margin-right: 7vw;
+	}
+	.userInfo{
+		font-style: italic;
+		font-weight: 300;
+		font-size: 24px;
+		line-height: 38px;
+	}
+	#about{
+		margin-top: 10vh;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 28px;
+		font-style: normal;
 	}
 	#ratingTable{
-		width: 50%;
+		width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+		
+	}
+	#ratingTable table{
+		position: fixed;
+		padding-right:25vw;
 	}
 	#ratingTable h2{
 		margin-bottom: 2vh;
+		font-size: 2vw;
 	}
 </style>

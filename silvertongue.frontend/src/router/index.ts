@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 import Tests from '../views/Tests.vue'
 import Login from '../views/Login.vue';
+import Checker from '../views/Checker.vue';
 import Register from '../views/Register.vue';
 
 Vue.use(VueRouter)
@@ -22,6 +23,11 @@ const routes: Array<RouteConfig> = [
     path: '/register',
     name: 'register',
     component: Register
+  },
+  {
+    path: '/checker',
+    name: 'checker',
+    component: Checker
   },
   {
     path: '/login',

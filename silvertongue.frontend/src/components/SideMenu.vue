@@ -7,11 +7,8 @@
 		<stongue-button :link="'tests'" is-full-width>
 			Мой словарь
 		</stongue-button>
-		<stongue-button :link="'tests'" is-full-width>
-			Орфография
-		</stongue-button>
-		<stongue-button :link="'tests'" is-full-width>
-			Грамматика
+		<stongue-button :link="'checker'" is-full-width>
+			Поиск ошибок
 		</stongue-button>
 		<stongue-button :link="'tests'" is-full-width>
 			Материалы
@@ -58,6 +55,7 @@ export default class SideMenu extends Vue{
 		box-sizing: border-box;
 		padding: 0.6vw;
 		justify-content: space-between;
+		box-shadow: 4px 0px 12px -6px rgba(0, 0, 0, 0.25);
 	}
 	#imgLogo{
 		width: 10vw;

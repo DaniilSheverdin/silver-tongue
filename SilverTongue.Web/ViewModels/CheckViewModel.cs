@@ -11,7 +11,12 @@ namespace SilverTongue.Web.ViewModels
         public DateTime date { get; set; }
         public bool isSpellCorect { get; set; }
         public bool isGrammarCorrect { get; set; }
-        public List<SpellCheck> errors { get; set; }
+        public List<SpellCheckModel> errors { get; set; }
     }
-
+    public class SpellCheckModel
+    {
+        public int id { get; set; }
+        public string word { get; set; }
+        public string optionsSequence { get; set; }
+    }
 }

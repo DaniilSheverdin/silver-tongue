@@ -3,6 +3,7 @@ using SilverTongue.Data;
 using SilverTongue.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SilverTongue.Services.Checker
@@ -20,7 +21,7 @@ namespace SilverTongue.Services.Checker
 
             M_word= new Microsoft.Office.Interop.Word.Application();
             int initialCapacity = 82765;
-            int maxEditDistanceDictionary = 2; //максимальное расстояние редактирование (уровень ошибки)
+            int maxEditDistanceDictionary = 3; //максимальное расстояние редактирование (уровень ошибки)
             symSpell = new SymSpell(initialCapacity, maxEditDistanceDictionary);
 
             //загрузка словаря
@@ -45,7 +46,8 @@ namespace SilverTongue.Services.Checker
                 var db = scope.ServiceProvider.GetRequiredService<Data.DbContext>();
                 try
                 {
-
+                    if (word[0] >= 'a' && 'z' <= word[0])
+                        throw new ArgumentException("Введите АНГЛИЙСКИЙ текст");
                     var checkNote = new Data.Models.Check
                     {
                         CreateOn = DateTime.Now,
@@ -54,6 +56,9 @@ namespace SilverTongue.Services.Checker
                         isSpellCorrect = true,
                         Phrase = word,
                     };
+                    var old = db.Checks.SingleOrDefault(x => x.Phrase == word && x.UserId == id);
+                    if (old!=null)
+                        db.Checks.Remove(old);
                     db.Checks.Add(checkNote);
                     var clearText = Regex.Replace(word, "[-.?!)(,:]", "");
                     string[] splittedText = clearText.Split(' ');
@@ -70,21 +75,32 @@ namespace SilverTongue.Services.Checker
                         };
 
                         suggestions = symSpell.Lookup(sT, (SymSpell.Verbosity)2, 1);
-                        foreach (var suggestion in suggestions)
+                        if (suggestions.Count == 0)
                         {
-                            spellCheckNote.OptionsSequence += suggestion.term + "/";
-
-                            Console.WriteLine("правильное написание: " + suggestion.term + " расстояние редактирования = " + suggestion.distance.ToString());
-                        }
-                        if (suggestions[0].distance != 0)
-                        {
+                            spellCheckNote.OptionsSequence += "Упс! Система не нашла исправления";
                             checkNote.isSpellCorrect = false;
 
                             notesForReq.Add(spellCheckNote);
                             db.SpellChecks.Add(spellCheckNote);
                         }
                         else
-                            db.Users.Find(id).Points += 1;
+                        {
+                            foreach (var suggestion in suggestions)
+                            {
+                                spellCheckNote.OptionsSequence += suggestion.term + "/";
+
+                                // Console.WriteLine("правильное написание: " + suggestion.term + " расстояние редактирования = " + suggestion.distance.ToString());
+                            }
+                            if (suggestions[0].distance != 0)
+                            {
+                                checkNote.isSpellCorrect = false;
+
+                                notesForReq.Add(spellCheckNote);
+                                db.SpellChecks.Add(spellCheckNote);
+                            }
+                            else
+                                db.Users.Find(id).Points += 1;
+                        }
                         
                         
                     }

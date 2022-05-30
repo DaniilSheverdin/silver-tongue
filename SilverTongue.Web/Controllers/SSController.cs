@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SilverTongue.Web.Serialization;
+using SilverTongue.Web.ViewModels;
 
 namespace SilverTongue.Web.Controllers
 {
@@ -19,13 +20,16 @@ namespace SilverTongue.Web.Controllers
         }
         [Authorize]
         [HttpPost("check")]
-        public ActionResult check([FromBody] string phrase)
+        public ActionResult check([FromBody]ForCheckModel phrase)
         {
 
             var userId = int.Parse(User.Identity.Name);
             _logger.LogInformation("Checking...");
-            var check = _CheckerService.Check(phrase, userId);
-            return Ok(CheckMapper.SerializeCheckModel(check.Data));
+            var check = _CheckerService.Check(phrase.word.ToLower(), userId);
+            if (check.IsSucces)
+                return Ok(CheckMapper.SerializeCheckModel(check.Data));
+            else
+                return Ok(check);
         }
     }
 }

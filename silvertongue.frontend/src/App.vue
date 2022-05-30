@@ -29,8 +29,8 @@ export default class App extends Vue{
 	}
 
 }
-</script>
 
+</script>
 <style lang='scss'>
   @import "@/scss/global.scss";
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;700&display=swap');
@@ -43,6 +43,11 @@ export default class App extends Vue{
 
   .app-menu{
     position: fixed;
+		z-index: 1; /* Stay on top */
+		top: 0; /* Stay at the top */
+		left: 0;
+    height: 100%;
+		overflow-x: hidden; /* Disable horizontal scroll */
   }
   .app-content{
     padding: 3.1vh;
@@ -50,6 +55,9 @@ export default class App extends Vue{
     margin: 1vh auto 3.5vh $menu-width;
     text-align: left;
 
+  }
+  h1{
+  font-weight: 700;
   }
 }
 *{
@@ -61,5 +69,7 @@ a{
 
 hr{
   margin-bottom: 1.5vh;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.45);
 }
+
 </style>

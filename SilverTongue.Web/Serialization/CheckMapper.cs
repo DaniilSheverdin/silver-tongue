@@ -16,6 +16,11 @@ namespace SilverTongue.Web.Serialization
         {
             var check = check_tuple.Item2;
             var errors = check_tuple.Item1;
+            List< SpellCheckModel > m_error= new List<SpellCheckModel>();
+            foreach (var e in errors)
+            {
+                m_error.Add(new SpellCheckModel { id = e.Id, word=e.Word, optionsSequence=e.OptionsSequence });
+            }
             return new CheckViewModel
             {
                 checkID = check.Id,
@@ -23,7 +28,7 @@ namespace SilverTongue.Web.Serialization
                 phrase = check.Phrase,
                 isGrammarCorrect = check.isGrammCorrect,
                 isSpellCorect = check.isSpellCorrect,
-                errors = errors
+                errors = m_error
             };
         }
     }
