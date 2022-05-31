@@ -3,14 +3,14 @@
 		<h1>Поиск ошибок в тексте</h1>
 		<hr/>
 		<div class="checkerContent-container">
-			<p class='info'>Для проверки текста введите слово или фразу</p>
+			<p id='info'>Для проверки текста введите слово или фразу</p>
 			<form name='textForm'>
 				<div  class="form-group">
 					<textarea placeholder="What's your story?" v-model="text" class="form-control" name="text"></textarea>
 				</div>
 				
 				<div class="form-group">
-          <button class="btn btn-primary btn-block" :disabled="loading" @click.prevent="handleCheck">
+          <button class="btn_ btn-block customButton" :disabled="loading" @click.prevent="handleCheck">
             <span
               v-show="loading"
               class="spinner-border spinner-border-sm"
@@ -24,16 +24,22 @@
           </div>
         </div>
 			</form>
+			<hr/>
 			<div v-if='!isNotChecked&&errorList.length!=0'>
-				<h2>Исправления орографических ошибок:</h2>
+				<h2>Исправления орфографических ошибок:</h2>
 				<hr/>
 				<textarea readonly='true' v-model="errorList" class="form-control" name="text">
 				</textarea>
 			</div>
-			<p class="info" v-if="result.isGrammarCorrect && !isNotChecked" style="background-color:#7fd764;color:white">Грамматические ошибки не найдены</p>
-			<p class="info" v-if="!result.isGrammarCorrect && !isNotChecked">Найдены грамматические ошибки</p>
+			<p class="info_2 correct" v-else-if="!isNotChecked">Орфографические ошибки не найдены</p>
+			<p v-if="!isNotChecked" v-bind:class="[result.isGrammarCorrect? 'correct': 'error', 'info_2']">Грамматические ошибки {{grammarMessage}}</p>
 			<div>
 				<h2>Последние ошибки:</h2>
+				<ul>
+					<li v-for="i in archive" :key="i.checkID">
+						{{i}}
+					</li>
+				</ul>
 			</div>
 			<p v-if="!isNotChecked">{{result}}</p>
 			<p>{{text}}</p>
@@ -55,8 +61,7 @@ const checkerService=new CheckerService();
 		}
 	)
 	export default class Checker extends Vue{
-		
-		
+		archive: ICheck[]=[{checkID:-1, date:"", phrase:"", isGrammarCorrect: true, isSpellCorect:true, errors:[]}];
 		loading: boolean = false;
   	message: string = "";
 		isVoiceInput: boolean = false;
@@ -71,6 +76,15 @@ const checkerService=new CheckerService();
 				this.errorList=element.word+" - "+element.optionsSequence+"\n";
 			});
 		}
+		get grammarMessage(){
+			return this.result.isGrammarCorrect? "не найдены" : "найдены";
+		}
+		async initialize(){
+			this.archive=await checkerService.getArchive();
+		}
+		async created(){
+			await this.initialize();
+		}
 	}
 </script>
 
@@ -82,13 +96,50 @@ const checkerService=new CheckerService();
 		display: flex;
 		flex-direction: column;
 	}
-	.info{
+	#info{
 		font-style: italic;
 		font-weight: 300;
 		font-size: 24px;
 		line-height: 39px;
 	}
+	.info_2{
+		font-style: normal;
+		font-weight: 300;
+		font-size: 18px;
+		line-height: 28px;
+		text-align: center;
+	}
 	.form-control{
 		margin-bottom: 2vh;
+	}
+	.correct{
+		background-color:#7fd764;
+		color:white;
+	}
+	.error{
+		color:white;
+		background-color: rgb(189, 0, 0);
+	}
+	.btn_{
+		display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+		background-color: black;
+		color: #ffff;
+		border: none;
 	}
 </style>

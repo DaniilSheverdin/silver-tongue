@@ -20,4 +20,16 @@ export class CheckerService{
 		return result.data;
 
   }
+	public async getArchive() : Promise<ICheck[]>{
+		console.log('getting archive...:',this.API_URL)
+		const storedUser = localStorage.getItem('user');
+  	let user = JSON.parse(storedUser ? storedUser : "");
+		const config = {
+    	headers: { Authorization: `Bearer ${user.token}` }
+		};
+
+		let result: any = await axios.get(`${this.API_URL}/SS/archive`, config);
+		return result.data;
+
+  }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SilverTongue.Web.Serialization;
 using SilverTongue.Web.ViewModels;
+using System.Collections.Generic;
 
 namespace SilverTongue.Web.Controllers
 {
@@ -30,6 +31,18 @@ namespace SilverTongue.Web.Controllers
                 return Ok(CheckMapper.SerializeCheckModel(check.Data));
             else
                 return Ok(check);
+        }
+        [Authorize]
+        [HttpGet("archive")]
+        public ActionResult archive()
+        {
+            var userId = int.Parse(User.Identity.Name);
+            _logger.LogInformation("getting archive...");
+            var archive = _CheckerService.getArchive(userId);
+            if (archive.IsSucces)
+                return Ok(CheckMapper.SerializeArchiveModel(archive.Data));
+            else
+                return Ok(archive);
         }
     }
 }

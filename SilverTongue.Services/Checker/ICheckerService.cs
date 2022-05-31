@@ -13,5 +13,11 @@ namespace SilverTongue.Services.Checker
         /// <param name="id"></param>
         /// <returns></returns>
         ServiceResponse<Tuple<List<SpellCheck>, Check>> Check(string word, int id);
+        /// <summary>
+        /// Получение данных проверок
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        ServiceResponse<List<Check>> getArchive(int id);
     }
 }

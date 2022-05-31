@@ -127,5 +127,46 @@ namespace SilverTongue.Services.Checker
                 }
             }
         }
+
+        public ServiceResponse<List<Check>> getArchive(int id)
+        {
+            using (var scope = scopeFactory.CreateScope())
+            {
+                try
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<Data.DbContext>();
+
+                    var archive= new List<Data.Models.Check>();
+                    var archive_DB = db.Checks.Where(a=>a.UserId==id&&(!a.isSpellCorrect||!a.isGrammCorrect)).OrderByDescending(p=>p.CreateOn).ToList();
+
+                    foreach (var n in archive_DB)
+                    {
+                        archive.Add(n);
+                        if (archive.Count == 5)
+                            break;
+                    }
+
+                    return new ServiceResponse<List<Check>>
+                    {
+                        Data = archive,
+                        Time = DateTime.Now,
+                        Message = "new archive conversion request",
+                        IsSucces = true
+                    };
+                }
+                catch (Exception e)
+                {
+                    return new ServiceResponse<List<Check>>
+                    {
+                        Data = null,
+                        Time = DateTime.Now,
+                        Message = e.StackTrace,
+                        IsSucces = false
+                    };
+                }
+            }
+
+            
+        }
     }
 }

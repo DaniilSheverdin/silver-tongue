@@ -8,7 +8,7 @@ namespace SilverTongue.Web.Serialization
     public static class CheckMapper
     {
         /// <summary>
-        /// Data model to view model
+        /// Data model to view model (for checkig)
         /// </summary>
         /// <param name="dict"></param>
         /// <returns></returns>
@@ -30,6 +30,28 @@ namespace SilverTongue.Web.Serialization
                 isSpellCorect = check.isSpellCorrect,
                 errors = m_error
             };
+        }
+        /// <summary>
+        /// Data model of Check list to view model (for getting archive)
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        public static List<CheckViewModel> SerializeArchiveModel(List<Check> check)
+        {
+            List<CheckViewModel> archive = new List<CheckViewModel>();
+            foreach (var e in check)
+            {
+                archive.Add(new CheckViewModel
+                {
+                    checkID=e.Id,
+                    isGrammarCorrect=e.isGrammCorrect,
+                    isSpellCorect=e.isSpellCorrect,
+                    errors=null,
+                    date=e.CreateOn,
+                    phrase=e.Phrase
+                });
+            }
+            return archive;
         }
     }
 }
