@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SilverTongue.Data.Models;
+using SilverTongue.Data.Models.UserTests;
 
 namespace SilverTongue.Data
 {
@@ -23,5 +24,21 @@ namespace SilverTongue.Data
         /// Проверки
         /// </summary>
         public virtual DbSet<Check> Checks { get; set; }
+        /// <summary>
+        /// Варианты ответов на вопрос теста
+        /// </summary>
+        public virtual DbSet<Option> Options { get; set; }
+        /// <summary>
+        /// Вопросы тестов
+        /// </summary>
+        public virtual DbSet<Question> Questions { get; set; }
+        /// <summary>
+        /// Тесты
+        /// </summary>
+        public virtual DbSet<Test> Tests { get; set; }
+        /// <summary>
+        /// Результаты тестов
+        /// </summary>
+        public virtual DbSet<TestResult> TestResults { get; set; }
     }
 }
