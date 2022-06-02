@@ -39,6 +39,7 @@ namespace SilverTongue.Web
             // services.AddTransient<Services.User.IUserService, Services.User.UserService>();
             //   services.AddTransient<Services.Checker.ISymSpellCheckerService, Services.Checker.SymSpellCheckerService>();
             // services.AddTransient<Services.User.IUserService, Services.User.UserService>();
+            services.AddTransient<Services.UserTests.IUserTestService, Services.UserTests.UserTestService>();
             services.AddSingleton<Services.Checker.ICheckerService, Services.Checker.CheckerService>();
             services.AddSwaggerGen(c =>
             {

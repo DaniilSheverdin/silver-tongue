@@ -21,7 +21,7 @@ namespace SilverTongue.Web.Controllers
         }
         [Authorize]
         [HttpPost("check")]
-        public ActionResult check([FromBody]ForCheckModel phrase)
+        public ActionResult check(ForCheckModel phrase)
         {
 
             var userId = int.Parse(User.Identity.Name);

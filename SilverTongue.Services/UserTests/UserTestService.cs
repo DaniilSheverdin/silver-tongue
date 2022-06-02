@@ -17,6 +17,7 @@ namespace SilverTongue.Services.UserTests
         {
             _db = dbContext;
             _appSettings = appSettings.Value;
+
         }
         public List<Test> GetAllTests()
         {
@@ -41,19 +42,19 @@ namespace SilverTongue.Services.UserTests
             try
             {
                 double mark = 0;
-                var questions = _db.Questions.Where(q => q.TestID == TestID).ToList();
-                foreach (var q in questions)
-                {
-                    var options = _db.Options.Where(o => o.QuestionID == q.id && o.isCorrect).Select(o => o.id).ToList();
+              //  var questions = _db.Questions.Where(q => q.TestID == TestID).ToList();
+               // foreach (var q in questions)
+              //  {
+                    var options = _db.Options.Where(o => o.isCorrect).Select(o => o.id).ToList();
 
                     var inter = options.Intersect(answers).ToList();
                     if (inter.Count != 0)
                     {
                         mark = Math.Round((double)inter.Count / options.Count * 100, 2);
                     }
-                    
-                }
 
+                // }
+                _db.Users.Find(userID).Points += Convert.ToInt32(mark);
                 _db.TestResults.Add(new TestResult
                 {
                     TestID = TestID,
