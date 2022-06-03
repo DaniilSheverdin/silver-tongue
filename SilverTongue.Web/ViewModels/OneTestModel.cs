@@ -7,13 +7,13 @@ namespace SilverTongue.Web.ViewModels
 {
     public class OneTestModel
     {
-        public string Question { get; set; }
-        public List<OptionModel> Options { get; set; }
+        public string question { get; set; }
+        public List<OptionModel> options { get; set; }
     }
 
     public class OptionModel
     {
         public int id { get; set; }
-        public string Value { get; set; }
+        public string value { get; set; }
     }
 }

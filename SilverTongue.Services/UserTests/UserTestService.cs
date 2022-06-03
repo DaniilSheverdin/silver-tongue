@@ -37,51 +37,32 @@ namespace SilverTongue.Services.UserTests
             return tuples;
         }
 
-        public ServiceResponse<double> GetResult(List<int> answers, int TestID, int userID)
+        public Tuple<double, List<int>, List<int>> GetResult(List<int> answers, int TestID, int userID)
         {
-            try
+          
+            double mark = 0;
+
+            var options = _db.Options.Where(o => o.isCorrect).Select(o => o.id).ToList();            
+            var inter = options.Intersect(answers).ToList();
+            var notCorrect = answers.Except(inter).ToList();
+
+            if (inter.Count != 0)
             {
-                double mark = 0;
-              //  var questions = _db.Questions.Where(q => q.TestID == TestID).ToList();
-               // foreach (var q in questions)
-              //  {
-                    var options = _db.Options.Where(o => o.isCorrect).Select(o => o.id).ToList();
-
-                    var inter = options.Intersect(answers).ToList();
-                    if (inter.Count != 0)
-                    {
-                        mark = Math.Round((double)inter.Count / options.Count * 100, 2);
-                    }
-
-                // }
-                _db.Users.Find(userID).Points += Convert.ToInt32(mark);
-                _db.TestResults.Add(new TestResult
-                {
-                    TestID = TestID,
-                    date = DateTime.Now,
-                    UserID = userID,
-                    Percent = mark
-                });
-                _db.SaveChanges();
-
-                return new ServiceResponse<double>
-                {
-                    Data = mark,
-                    IsSucces = true,
-                    Message = "New result",
-                    Time = DateTime.Now
-                };
+                mark = Math.Round((double)inter.Count / options.Count * 100, 2);
             }
-            catch (Exception e)
+
+            _db.Users.Find(userID).Points += Convert.ToInt32(mark);
+            _db.TestResults.Add(new TestResult
             {
-                return new ServiceResponse<double>
-                {
-                    Data = -1,
-                    IsSucces = false,
-                    Message = e.StackTrace,
-                    Time = DateTime.Now
-                };
-            }
+                TestID = TestID,
+                date = DateTime.Now,
+                UserID = userID,
+                Percent = mark
+            });
+            _db.SaveChanges();
+
+            return new Tuple<double, List<int>, List<int>>(mark, inter, notCorrect);
+            
             
         }
     }

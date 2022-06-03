@@ -7,9 +7,7 @@ import axios from "axios";
 export class RatingService{
 	API_URL= process.env.VUE_APP_API_URL;
 
-	bodyParameters = {
-		key: "value"
-	};
+	
 	public async getRating() : Promise<IRating[]>{
 		console.log('get Rating:',this.API_URL)
 		const storedUser = localStorage.getItem('user');

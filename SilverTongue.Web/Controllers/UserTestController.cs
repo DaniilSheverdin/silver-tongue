@@ -6,8 +6,6 @@ using SilverTongue.Web.Serialization;
 using SilverTongue.Web.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SilverTongue.Web.Controllers
 {
@@ -57,7 +55,7 @@ namespace SilverTongue.Web.Controllers
             }
         }
         [Authorize]
-        [HttpGet("result")]
+        [HttpPost("result")]
         public ActionResult result(Answer answers)
         {
             try

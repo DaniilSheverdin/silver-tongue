@@ -17,9 +17,9 @@ namespace SilverTongue.Services.UserTests
         /// <returns></returns>
         List<Tuple<Data.Models.UserTests.Question, List<Data.Models.UserTests.Option>>> GetOneTest(int id);
         /// <summary>
-        /// Возвращает процент правильных ответов
+        /// Возвращает процент правильных ответов, список id правильных и неправильных ответов
         /// </summary>
-        ServiceResponse<double> GetResult(List<int> answers, int TestID, int userID);
+        Tuple<double, List<int>, List<int>> GetResult(List<int> answers, int TestID, int userID);
         
     }
 }

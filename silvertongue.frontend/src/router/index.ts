@@ -5,6 +5,7 @@ import Tests from '../views/Tests.vue'
 import Login from '../views/Login.vue';
 import Checker from '../views/Checker.vue';
 import Register from '../views/Register.vue';
+import Test from '../views/Test.vue';
 
 Vue.use(VueRouter)
 
@@ -18,6 +19,11 @@ const routes: Array<RouteConfig> = [
     path: '/tests',
     name: 'tests',
     component: Tests
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: Test
   },
   {
     path: '/register',

@@ -17,11 +17,11 @@ namespace SilverTongue.Web.Serialization
 
                 res.Add(new OneTestModel()
                 {
-                    Options= n.Item2.Select(p => new OptionModel {
+                    options= n.Item2.Select(p => new OptionModel {
                         id = p.id,
-                        Value = p.Value
+                        value = p.Value
                     }).ToList(),
-                    Question = n.Item1.Value
+                    question = n.Item1.Value
                 }); ;
             }
             return res;

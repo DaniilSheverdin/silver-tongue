@@ -9,7 +9,7 @@ namespace SilverTongue.Web.ViewModels
     public class TestModel
     {
         public int id { get; set; }
-        public string Title { get; set; }
-        public string About { get; set; }
+        public string title { get; set; }
+        public string about { get; set; }
     }
 }
